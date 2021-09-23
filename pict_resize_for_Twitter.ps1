@@ -24,7 +24,7 @@ foreach($p in $Path)
     #オリジナル画像サイズが5MB以上の場合
     #圧縮率
     #upload最大サイズを超えないための安全率を設定
-    $safetyRatio = 1MB
+    $safetyRatio = 0.5MB
     $compRate = $orgFileSize / ($twitPicMaxSize - $safetyRatio)
     
     #ペイント起動
@@ -41,20 +41,18 @@ foreach($p in $Path)
     [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
     Start-Sleep -m 500
     
-    #保存して閉じる
-    [System.Windows.Forms.SendKeys]::SendWait("^(s)")
+    #編集済みファイル名作成
     $originalFilePath = (Get-item $p).DirectoryName
     $originalFileName = (Get-ChildItem $p).BaseName
     $originalFileExtension = (Get-ChildItem $p).Extension
     $resizeFileNameFix = "_resize"
     $resizeFileName = $originalFilePath + "\" + $originalFileName + $resizeFileNameFix + $originalFileExtension
-    [System.Windows.Forms.SendKeys]::SendWait("%{F12}")
+    
+    #名前を付けて保存
+    [System.Windows.Forms.SendKeys]::SendWait("{F12}")
+    sleep -m 500
     [System.Windows.Forms.SendKeys]::SendWait($resizeFileName)
     [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-    [System.Windows.Forms.SendKeys]::SendWait("%")
-    [System.Windows.Forms.SendKeys]::SendWait("F")
-    [System.Windows.Forms.SendKeys]::SendWait("X")
-    
-    sleep -s 10
+    [System.Windows.Forms.SendKeys]::SendWait("%(s)")
+    [System.Windows.Forms.SendKeys]::SendWait("%(FX)")
 }
